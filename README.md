@@ -1,7 +1,7 @@
 [![Build Status](https://travis-ci.org/angelogluz/Mussum-API.svg?branch=master)](https://travis-ci.org/angelogluz/Mussum-API)
 
 # Crud JSF
-Projeto Java Server Faces utilizando principais medotos para um CRUD.
+Projeto Java Server Faces utilizando principais métodos para um CRUD.
 
 ## Módulos
 * Web
