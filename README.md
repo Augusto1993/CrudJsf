@@ -12,9 +12,9 @@ Projeto Java Server Faces utilizando principais métodos para um CRUD.
 
 ### Pré-requisitos
 -------
-* JDK - versão 1.6 do Java, ou mais recente;
+* JDK - versão 1.8 do Java, ou mais recente;
 * Netbeans - recomendamos o Netbeans IDE;
-* MySQL - versão 5 ou mais recente;
+* MySQL - versão 8.0 ou mais recente;
 
 #### Licença
 A licença MIT (MIT)
