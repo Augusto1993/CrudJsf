@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/05/2018 21:26:55 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="sys.model.Tbpais" table="tbpais" catalog="dbempregado" optimistic-lock="version">
+        <id name="idpais" type="java.lang.Integer">
+            <column name="idpais" />
+            <generator class="identity" />
+        </id>
+        <property name="nomepais" type="string">
+            <column name="nomepais" length="45" not-null="true" />
+        </property>
+        <set name="tbempregados" table="tbempregado" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tbpais_idpais" not-null="true" />
+            </key>
+            <one-to-many class="sys.model.Tbempregado" />
+        </set>
+        <set name="tbestados" table="tbestado" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tbpais_idpais" not-null="true" />
+            </key>
+            <one-to-many class="sys.model.Tbestado" />
+        </set>
+    </class>
+</hibernate-mapping>

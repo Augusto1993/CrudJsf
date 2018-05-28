@@ -1,0 +1,24 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/05/2018 21:26:55 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="sys.model.Tbcidade" table="tbcidade" catalog="dbempregado" optimistic-lock="version">
+        <id name="idcidade" type="java.lang.Integer">
+            <column name="idcidade" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tbestado" class="sys.model.Tbestado" fetch="select">
+            <column name="tbestado_idestado" not-null="true" />
+        </many-to-one>
+        <property name="nomecidade" type="string">
+            <column name="nomecidade" length="45" not-null="true" />
+        </property>
+        <set name="tbempregados" table="tbempregado" inverse="true" lazy="true" fetch="select">
+            <key>
+                <column name="tbcidade_idcidade" not-null="true" />
+            </key>
+            <one-to-many class="sys.model.Tbempregado" />
+        </set>
+    </class>
+</hibernate-mapping>

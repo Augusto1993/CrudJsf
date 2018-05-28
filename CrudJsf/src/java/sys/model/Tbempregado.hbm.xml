@@ -1,0 +1,36 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<!-- Generated 23/05/2018 21:26:55 by Hibernate Tools 4.3.1 -->
+<hibernate-mapping>
+    <class name="sys.model.Tbempregado" table="tbempregado" catalog="dbempregado" optimistic-lock="version">
+        <id name="idempregado" type="java.lang.Integer">
+            <column name="idempregado" />
+            <generator class="identity" />
+        </id>
+        <many-to-one name="tbcidade" class="sys.model.Tbcidade" fetch="select">
+            <column name="tbcidade_idcidade" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tbestado" class="sys.model.Tbestado" fetch="select">
+            <column name="tbestado_idestado" not-null="true" />
+        </many-to-one>
+        <many-to-one name="tbpais" class="sys.model.Tbpais" fetch="select">
+            <column name="tbpais_idpais" not-null="true" />
+        </many-to-one>
+        <property name="nome" type="string">
+            <column name="nome" length="150" not-null="true" />
+        </property>
+        <property name="sobrenome" type="string">
+            <column name="sobrenome" length="100" not-null="true" />
+        </property>
+        <property name="endereco" type="string">
+            <column name="endereco" length="150" not-null="true" />
+        </property>
+        <property name="codigoArea" type="string">
+            <column name="codigoArea" length="100" not-null="true" />
+        </property>
+        <property name="telefone" type="string">
+            <column name="telefone" length="50" not-null="true" />
+        </property>
+    </class>
+</hibernate-mapping>
