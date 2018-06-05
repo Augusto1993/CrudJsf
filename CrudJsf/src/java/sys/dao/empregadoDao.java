@@ -3,7 +3,8 @@ package sys.dao;
 
 import java.util.List;
 
-import sys.model.Tbempregado;
+import sys.model.*;
+
 
 
 /**
@@ -22,9 +23,23 @@ public interface empregadoDao {
      * 
      * @param tbempregado 
      */
-    public void novoEmpregado (Tbempregado tbempregado);     
+    public void novoEmpregado (Tbempregado tbempregado); 
+    public void alterarEmpregado (Tbempregado tbempregado);
+    public void excluirEmpregado (Tbempregado tbempregado);
+    
+    /**
+     * Método para gerar dinamicamente os select menus.
+     */
+    public List<Tbpais> listarpaises();
+    public List<Tbestado> listarestados(Tbempregado tbempregado);
+    public List<Tbcidade> liscarcidades(Tbempregado tbempregado);
+    
    
 }
+
+
+
+
 
 
 

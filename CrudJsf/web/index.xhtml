@@ -8,78 +8,195 @@
         <title>Sistema de Cadastro de Empregados</title>
     </h:head>
     <h:body>
-        
-        <h:form id="formInsertar">
-            <p:panelGrid columns="2" style="margin: 0 auto">
-                <p:outputLabel value="Nome "/>
-                <p:inputText value="#{empregadoBean.tbempregado.nome}"/>
-                
-                <p:outputLabel value="Sobrenome "/>
-                <p:inputText value="#{empregadoBean.tbempregado.sobrenome}"/>
-                
-                <p:outputLabel value="Endereço "/>
-                <p:inputText value="#{empregadoBean.tbempregado.endereco}"/>
-                
-                <p:outputLabel value="Pais"/>
-                <p:selectOneMenu value="#{empregadoBean.tbempregado.tbpais.idpais}">
-                    <f:selectItem itemLabel="--Selecione--"/>    
-                </p:selectOneMenu>
-                
-                <p:outputLabel value="Estado"/>
-                <p:selectOneMenu value="#{empregadoBean.tbempregado.tbpais.idpais}">
-                    <f:selectItem itemLabel="--Selecione--"/>    
-                </p:selectOneMenu>
-                
-                <p:outputLabel value="Cidade"/>
-                <p:selectOneMenu value="#{empregadoBean.tbempregado.tbpais.idpais}">
-                    <f:selectItem itemLabel="--Selecione--"/>    
-                </p:selectOneMenu>
-                
-                <p:outputLabel value="Código de Área "/>
-                <p:inputText value="#{empregadoBean.tbempregado.codigoArea}"/>
-                 
-                <p:outputLabel value="Telefone "/>
-                <p:inputText value="#{empregadoBean.tbempregado.telefone}"/>
-                
-                <p:commandButton value="Cadastrar"/>
-                <p:commandButton value="Cancelar"/>
-                
-                
-            </p:panelGrid>
+
+
+        <p:growl id="mensageGeral" autoUpdate="true" showDetail="true" life="3000"/>
+        <h:form>
+            <p:commandButton value="Novo Empregado" actionListener="#{empregadoBean.prepararNovoEmpregado(actionEvent)}" oncomplete="PF('dlgNovo').show();" update=":formInsertar"/>    
+            
         </h:form>
-        
-        
-        
-        
-        
+
+        <p:dialog id="dlgN" widgetVar="dlgNovo" header="Novo Registro" showEffect="explode" hideEffect="explode"
+                  modal="true">
+
+            <h:form id="formInsertar">  
+                <p:panelGrid columns="2" style="margin: 0 auto">
+                    <p:outputLabel value="Nome "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.nome}"
+                                 required="true" requiredMessage="Nome Obrigatório"/>
+
+                    <p:outputLabel value="Sobrenome "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.sobrenome}"
+                                 required="true" requiredMessage="Sobrenome Obrigatório"/>
+
+                    <p:outputLabel value="Endereço "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.endereco}"
+                                 required="true" requiredMessage="Endereço Obrigatório"/>
+
+                    <p:outputLabel value="Pais"/>
+                    <p:selectOneMenu id="pais" value="#{empregadoBean.tbempregado.tbpais.idpais}"
+                                     required="true" requiredMessage="Selecione um Pais">
+                        <f:selectItem itemLabel="--Selecione--"/>   
+                        <f:selectItems value="#{empregadoBean.listPaises}"/> 
+                        <f:ajax execute="pais" render="estado"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Estado"/>
+                    <p:selectOneMenu id="estado" value="#{empregadoBean.tbempregado.tbestado.idestado}"
+                                     required="true" requiredMessage="Selecione um Estado">
+                        <f:selectItem itemLabel="--Selecione--"/>  
+                        <f:selectItems value="#{empregadoBean.listEstados}"/>
+                        <f:ajax execute="estado" render="cidade"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Cidade"/>
+                    <p:selectOneMenu id="cidade" value="#{empregadoBean.tbempregado.tbcidade.idcidade}"
+                                     required="true" requiredMessage="Selecione uma Cidade">
+                        <f:selectItem itemLabel="--Selecione--"/> 
+                        <f:selectItems value="#{empregadoBean.listCidades}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Código de Área "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.codigoArea}"/>
+
+                    <p:outputLabel value="Telefone "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.telefone}"/>
+
+                    <p:commandButton value="Cadastrar" actionListener="#{empregadoBean.novoEmpregado()}"
+                                     oncomplete="PF('dlgNovo').hide();"
+                                     update=":formMostrarEmpregados:tabelaMostrarEmpregados :formInsertar"/>
+                    <p:commandButton value="Cancelar" action="#{empregadoBean.cancelar()}"
+                                     update=":formInsertar" immediate="true"
+                                     onclick="PF('dlgNovo').hide();"/>
+
+
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+        <p:separator/>
+
         <h:form id="formMostrarEmpregados">
             <p:dataTable id="tabelaMostrarEmpregados" var="emp" value="#{empregadoBean.listar}"
                          emptyMessage="Não há dados de empregado">
                 <p:column headerText="Id empregado">
                     <h:outputText value="#{emp.idempregado}"/>
                 </p:column>
-                
+
                 <p:column headerText="Nome do empregado">
                     <h:outputText value="#{emp.nome} #{emp.sobrenome}"/>
                 </p:column>
-                
+
                 <p:column headerText="Pais">
                     <h:outputText value="#{emp.tbpais.nomepais}"/>
                 </p:column>
-                
+
                 <p:column headerText="Estado">
                     <h:outputText value="#{emp.tbestado.nomeEstado}"/>
                 </p:column>
-                
+
                 <p:column headerText="Cidade">
                     <h:outputText value="#{emp.tbcidade.nomecidade}"/>
                 </p:column>
-            
+
+                <p:column headerText="">
+                    <p:commandButton value="Alterar" oncomplete="PF('dlgAlterar').show();"
+                                     update=":formAlterar">
+                        <f:setPropertyActionListener target="#{empregadoBean.tbempregado}" value="#{emp}"/>
+
+                    </p:commandButton>
+                </p:column>
+
+
+
+                <p:column headerText="">
+                    <p:commandButton value="Excluir" oncomplete="PF('dlgExcluir').show();"
+                                     update=":formExcluir">
+                        <f:setPropertyActionListener target="#{empregadoBean.tbempregado}" value="#{emp}"/>
+
+                    </p:commandButton>
+                </p:column>
+
+
+
+
             </p:dataTable>
-                         
+
         </h:form>
-        
-        
+
+        <p:dialog id="dlg" header="Alterar Dados" widgetVar="dlgAlterar" showEffect="explode"
+                  hideEffect="explode" modal="true">
+            <h:form id="formAlterar">
+                <p:panelGrid columns="2" style="margin: 0 auto">
+                    <p:outputLabel value="Nome "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.nome}"
+                                 required="true" requiredMessage="Nome Obrigatório"/>
+
+                    <p:outputLabel value="Sobrenome "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.sobrenome}"
+                                 required="true" requiredMessage="Sobrenome Obrigatório"/>
+
+                    <p:outputLabel value="Endereço "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.endereco}"
+                                 required="true" requiredMessage="Endereço Obrigatório"/>
+
+                    <p:outputLabel value="Pais"/>
+                    <p:selectOneMenu id="pais" value="#{empregadoBean.tbempregado.tbpais.idpais}"
+                                     required="true" requiredMessage="Selecione um Pais">
+                        <f:selectItem itemLabel="--Selecione--"/>   
+                        <f:selectItems value="#{empregadoBean.listPaises}"/> 
+                        <f:ajax execute="pais" render="estado"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Estado"/>
+                    <p:selectOneMenu id="estado" value="#{empregadoBean.tbempregado.tbestado.idestado}"
+                                     required="true" requiredMessage="Selecione um Estado">
+                        <f:selectItem itemLabel="--Selecione--"/>  
+                        <f:selectItems value="#{empregadoBean.listEstados}"/>
+                        <f:ajax execute="estado" render="cidade"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Cidade"/>
+                    <p:selectOneMenu id="cidade" value="#{empregadoBean.tbempregado.tbcidade.idcidade}"
+                                     required="true" requiredMessage="Selecione uma Cidade">
+                        <f:selectItem itemLabel="--Selecione--"/> 
+                        <f:selectItems value="#{empregadoBean.listCidades}"/>
+                    </p:selectOneMenu>
+
+                    <p:outputLabel value="Código de Área "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.codigoArea}"/>
+
+                    <p:outputLabel value="Telefone "/>
+                    <p:inputText value="#{empregadoBean.tbempregado.telefone}"/>
+
+                    <p:commandButton value="Salvar Alteração" actionListener="#{empregadoBean.alterarEmpregado()}"
+                                     update=":formMostrarEmpregados:tabelaMostrarEmpregados" 
+                                     oncomplete="PF('dlgAlterar').hide();"/>
+                    <p:commandButton value="Cancelar" onclick="PF('dlgAlterar').hide();"
+                                     immediate="true"/>
+
+
+                </p:panelGrid>
+            </h:form>
+        </p:dialog>
+
+
+        <p:dialog id="dlg2" header="Excluir Dados" widgetVar="dlgExcluir" showEffect="explode"
+                  hideEffect="explode" modal="true">
+
+            <h:form id="formExcluir">
+                <h:outputText value="Deseja Excluir os registros?"/>
+                <p:commandButton value="Sim" actionListener="#{empregadoBean.excluirEmpregado()}"
+                                 update=":formMostrarEmpregados"
+                                 oncomplete="PF('dlgExcluir').hide();"/>
+
+                <p:commandButton value="Nao" onclick="PF('dlgExcluir').hide();"/>
+
+            </h:form>
+        </p:dialog>
+
+
+
+
     </h:body>
 </html>
 
