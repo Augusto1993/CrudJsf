@@ -78,15 +78,15 @@
         <h:form id="formMostrarEmpregados">
             <p:dataTable id="tabelaMostrarEmpregados" var="emp" value="#{empregadoBean.listar}"
                          emptyMessage="Não há dados de empregado">
-                <p:column headerText="Id empregado">
+                <p:column headerText="Id empregado" filterBy="#{emp.idempregado}">
                     <h:outputText value="#{emp.idempregado}"/>
                 </p:column>
 
-                <p:column headerText="Nome do empregado">
+                <p:column headerText="Nome do empregado" sortBy="#{emp.nome}">
                     <h:outputText value="#{emp.nome} #{emp.sobrenome}"/>
                 </p:column>
 
-                <p:column headerText="Pais">
+                <p:column headerText="Pais" filterBy="#{emp.tbpais.nomepais}">
                     <h:outputText value="#{emp.tbpais.nomepais}"/>
                 </p:column>
 

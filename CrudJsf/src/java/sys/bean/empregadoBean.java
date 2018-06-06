@@ -3,10 +3,8 @@ package sys.bean;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
-import javax.faces.context.FacesContext;
 import javax.faces.model.SelectItem;
 import sys.dao.empregadoDao;
 import sys.dao.empregadoDaoImp;
@@ -43,8 +41,15 @@ public class empregadoBean {
      * @return
      */
     public List<Tbempregado> getListar() {
-        empregadoDao eDao = new empregadoDaoImp();
-        listar = eDao.mostrarempregados();
+        if (listar == null) {
+            try {
+                empregadoDao eDao = new empregadoDaoImp();
+                listar = eDao.mostrarempregados();
+            } catch (Exception e) {
+                System.out.println("Erro ao carregar a lista de empregados: "+e);
+            }
+
+        }
         return listar;
     }
 
@@ -67,36 +72,31 @@ public class empregadoBean {
     /**
      *
      */
-    
-    public void prepararNovoEmpregado(ActionEvent actionEvent){
-         tbempregado = new Tbempregado();
-      
+    public void prepararNovoEmpregado(ActionEvent actionEvent) {
+        tbempregado = new Tbempregado();
+
     }
-    
-    
+
     public void novoEmpregado() {
         empregadoDao eDao = new empregadoDaoImp();
         eDao.novoEmpregado(tbempregado);
         //FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO,"Dados inseridos com sucesso!"));
 
     }
-    
+
     public void alterarEmpregado() {
         empregadoDao eDao = new empregadoDaoImp();
         eDao.alterarEmpregado(tbempregado);
         tbempregado = new Tbempregado();
 
     }
-    
+
     public void excluirEmpregado() {
         empregadoDao eDao = new empregadoDaoImp();
         eDao.excluirEmpregado(tbempregado);
         tbempregado = new Tbempregado();
 
     }
-    
-    
-    
 
     public List<SelectItem> getListPaises() {
         this.listPaises = new ArrayList<SelectItem>();
@@ -132,21 +132,18 @@ public class empregadoBean {
         listCidades.clear();
 
         for (Tbcidade cidade : c) {
-            SelectItem cidadeItem = new SelectItem(cidade.getIdcidade(),cidade.getNomecidade());
+            SelectItem cidadeItem = new SelectItem(cidade.getIdcidade(), cidade.getNomecidade());
             this.listCidades.add(cidadeItem);
         }
 
         return listCidades;
     }
-    
-    public void cancelar(){
-    tbempregado = new Tbempregado();
+
+    public void cancelar() {
+        tbempregado = new Tbempregado();
     }
-      
+
 }
-
-
-
 
 
 
